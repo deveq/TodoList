@@ -3,6 +3,7 @@ package com.soldemom.todolist
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -80,5 +81,16 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu,menu)
+
+
+
+        return super.onCreateOptionsMenu(menu)
     }
 }
