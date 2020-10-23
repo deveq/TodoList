@@ -11,8 +11,10 @@ import kotlinx.android.synthetic.main.item_todo.view.*
 import java.text.SimpleDateFormat
 
 class MyAdapter(val context: Context,
-                val itemList: ArrayList<Todo>
+                val itemList: ArrayList<Todo>,
+                val goToDetailListener : (Todo, Int) -> Unit
 ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -24,7 +26,12 @@ class MyAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val todo = itemList[position]
-        holder.todoText.text = todo.text
+        holder.todoText.apply {
+            text = todo.text
+            setOnClickListener {
+                goToDetailListener(todo, position)
+            }
+        }
 
         holder.todoIsDone.isChecked = todo.isDone
 
