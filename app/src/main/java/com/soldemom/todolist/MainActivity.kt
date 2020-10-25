@@ -6,16 +6,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
+import com.soldemom.todolist.todos.AppDatabase
+import com.soldemom.todolist.todos.Todo
+import com.soldemom.todolist.todos.TodoViewModel
+import com.soldemom.todolist.todos.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var todayList : ArrayList<Todo>
-    lateinit var tomorrowList : ArrayList<Todo>
     lateinit var todayAdapter : MyAdapter
-    lateinit var tomorrowAdapter: MyAdapter
+    lateinit var viewModel : TodoViewModel
+    lateinit var todoList: LiveData<MutableList<Todo>>
 
     companion object {
         const val RC_GO_TO_DETAIL = 1004
@@ -26,65 +32,30 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        todayList = arrayListOf<Todo>(
-            Todo("밥먹기"),
-            Todo("밥먹기",true),
-            Todo("밥먹기").apply{
-                time = System.currentTimeMillis()
-            },
-            Todo("밥먹기",true).apply{
-                time = System.currentTimeMillis()
-                hashTag = "밥"
-            },
-        )
-        tomorrowList = arrayListOf<Todo>(
-            Todo("공부"),
-            Todo("공부",true),
-            Todo("공부").apply{
-                time = System.currentTimeMillis()
-            },
-            Todo("공부").apply {
-                hashTag = "빨리 취업하고싶당ㅜㅜ"
-            },
-            Todo("공부"),
-        )
+        viewModel = ViewModelProvider(this,ViewModelProviderFactory(this.application))
+            .get(TodoViewModel::class.java)
 
-        todayAdapter = MyAdapter(this,todayList,::goToDetail)
-        tomorrowAdapter = MyAdapter(this,tomorrowList,::goToDetail)
+        todoList = viewModel.getAll()
+
+        todoList.observe(this, Observer {
+            //추가해야함
+            todayAdapter.notifyDataSetChanged()
+
+        })
+
+
+        todayAdapter = MyAdapter(this,todoList.value?:mutableListOf<Todo>(),viewModel,::goToDetail)
 
         today_list.adapter = todayAdapter
         today_list.layoutManager = LinearLayoutManager(this)
 
-        tomorrow_list.adapter = tomorrowAdapter
-        tomorrow_list.layoutManager = LinearLayoutManager(this)
-
-        todo_today.setOnClickListener {
-            today_list.apply {
-                val option = if (visibility == View.VISIBLE) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-                visibility = option
-            }
-        }
-
-        todo_tomorrow.setOnClickListener {
-            tomorrow_list.apply {
-                val option = if (visibility == View.VISIBLE) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-                visibility = option
-            }
-        }
 
         todo_add.setOnClickListener {
             if (todo_input.text.toString() != "") {
                 val todo = Todo(todo_input.text.toString())
-                todayList.add(0,todo)
-                todayAdapter.notifyDataSetChanged()
+                viewModel.insert(todo)
+                todayAdapter.itemList.add(todo)
+
                 todo_input.setText("")
             }
         }
@@ -94,7 +65,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-//          기본 메뉴
         val inflater = menuInflater
 
         inflater.inflate(R.menu.main_menu,menu)
@@ -102,25 +72,6 @@ class MainActivity : AppCompatActivity() {
         actionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
-
-
-        //커스텀 메뉴
-//        val actionBar = supportActionBar
-////        val inflater = menuInflater
-//        val inflater = LayoutInflater.from(this)
-//        val actionBarView = inflater.inflate(R.layout.custom_action_bar,null)
-//
-//        actionBar?.apply {
-//            setDisplayShowCustomEnabled(true)
-//            setDisplayHomeAsUpEnabled(true)
-//            setDisplayShowTitleEnabled(false)
-//            setDisplayShowHomeEnabled(false)
-//            customView = actionBarView
-//        }
-//
-//        val parent = actionBarView.parent as Toolbar
-//        parent.setContentInsetsAbsolute(0,0)
-
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -149,15 +100,9 @@ class MainActivity : AppCompatActivity() {
 
             val todo = bundle?.getSerializable("todo") as Todo
 
-            todayList[position!!] = todo
-            todayAdapter.notifyDataSetChanged()
-
-
-
+//            todayList[position!!] = todo
+            viewModel.update(todo)
+            todayAdapter.itemList[position!!] = todo
         }
-
-
-
-
     }
 }

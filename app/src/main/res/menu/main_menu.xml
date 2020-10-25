@@ -4,7 +4,17 @@
 
     <item
         android:id="@+id/menu_sort"
-        android:title="정렬기준"/>
+        android:title="정렬기준">
+        <menu>
+            <item
+                android:id="@+id/menu_sort_register"
+                android:title="등록일 기준"/>
+            <item
+                android:id="@+id/menu_sort_date"
+                android:title="날짜 기준"/>
+        </menu>
+
+    </item>
     <item
         android:id="@+id/menu_delete_done"
         android:title="완료 지우기"/>
@@ -17,7 +27,7 @@
         <menu>
             <item
                 android:id="@+id/menu_normal_search"
-                android:title="검색"/>
+                android:title="할 일 검색"/>
             <item
                 android:id="@+id/menu_hash_search"
                 android:title="#검색"/>
