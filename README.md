@@ -168,6 +168,23 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
     }
 </code></pre>
 
+<pre><code>
+TodoViewModel.kt
+    val mutableLiveData = MutableLiveData<MutableList<Todo>>(todos)
+
+    //할일 키워드로 얻기
+    fun getTodosByText(text: String) : MutableList<Todo> {
+        return todoDao.getTodosByText(text)
+    }
+</code></pre>
+<pre><code>
+TodoDao.kt
+    //할일 키워드로 얻기
+    @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
+    fun getTodosByText(text: String) : MutableList<Todo>
+    </code></pre>
+
+
 #### 정렬하기
 ![sort](https://user-images.githubusercontent.com/66777885/97325967-dadd9000-18b6-11eb-832b-a2060169c45d.gif)
 <pre><code>검색하기
@@ -187,6 +204,15 @@ MainActivity.kt
             ...
             ..
             .
+</code></pre>
+
+<pre><code>TodoDao.kt
+    @Query("select * from Todo order by registerTime desc")
+    fun getAll() : MutableList<Todo>
+
+    //전체 얻기. 날짜순으로 얻기.
+    @Query("select * from todo order by date, time desc")
+    fun getAllTimeOrder() : MutableList<Todo>
 </code></pre>
 
 
