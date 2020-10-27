@@ -9,9 +9,11 @@
 3. https://readystory.tistory.com/176 : [준비된 개발자]님의 [Android] AAC ViewModel 을 생성하는 6가지 방법 - ViewModelProvider
 
 #### TodoList 애플리케이션을 만든 이유
+<pre>
 간단한 참고자료1의 책을 이용해 공부하던 중 예제로 있던 TodoList를 조금 더 보완해서 만들 수 있지 않을까 생각하였습니다.
 Room을 이용해 로컬 DB를 이용하고, @Query를 이용해 SQL의 Select문을 이용한다면 간단한 검색과 정렬 기능을 추가할 수 있을 것이라 생각였고
 상단 Menu 역시 프로젝트를 통해 익힐 수 있을 것이라 생각하여 만들게 되었습니다.
+</pre>
 
 ## 순서
 - 0. 완성 화면
@@ -26,10 +28,11 @@ Room을 이용해 로컬 DB를 이용하고, @Query를 이용해 SQL의 Select�
 
 #### 상세보기 (상세설정)
 ![detail](https://user-images.githubusercontent.com/66777885/97325823-b8e40d80-18b6-11eb-8102-ebd4c3b6c95d.gif)
-   
+<pre>
 RecyclerView의 item이 클릭되면 Adapter로 전달된 goToDeatil메서드가 실행되고
 bundle에 Serializable을 구현한 Todo객체를 넣어줍니다.
 DetailActivity에서 Todo객체를 받아와 처리하는 방식으로 진행했습니다.
+</pre>
     
 #### 완료하기
 ![done](https://user-images.githubusercontent.com/66777885/97325869-c4373900-18b6-11eb-9b2f-de512f59cc03.gif)
@@ -106,9 +109,12 @@ Room의 Query어노테이션의 속성에 query문을 넣어주었고, getTodosB
 
 
 ### Room, LiveData, ViewModel
+<pre>
 Room, LiveData, ViewModel을 이용한 MVVM패턴을 활용하여
-MutableLiveData<MutableList<Todo>>타입으로 받고, Todo객체를 item_list의 View에 바인딩 해줌으로써
+MutableLiveData<MutableList<Todo>>타입으로 받고, 
+Todo객체를 item_list의 View에 바인딩 해줌으로써
 화면에 목록으로써 구현됨.
+</pre>
  *Room
   - Entity 생성
   <pre><code>@Entity
@@ -203,7 +209,7 @@ TodoDao객체에서 todoList 검색 결과를 받은 후 MutableLiveData<List<To
 
 
 ### 느낀점
-
+<pre>
 기본적인 Todo List의 레이아웃은 책을 참조하였으나
 기능 부분에서는 개인적으로 추가했으면 하는것들을 넣었습니다.
 덕분에 간단한 기능 뿐만 아니라 다양한 기능들을 활용해 볼 수 있었는데,
@@ -214,3 +220,4 @@ ViewModel 부분에서 정말 오랫동안 막혀있었습니다.
 억지로 로그인하여 주기적으로 동기화하도록 시도해보려 하였으나, 억지로 기능을 끼워넣는다는 생각이 들어
 이번 프로젝트에서는 파이어베이스를 활용하지 않았습니다.
 다음번 프로젝트에서는 인증과 파이어스토어를 십분 활용한 프로젝트를 구상해 만들어볼 예정입니다.
+<pre>
