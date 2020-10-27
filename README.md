@@ -8,3 +8,4 @@
 - 1. 사용한 개념
 - 2. Dependencies
 - 3. 기능 설명
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/66777885/97251257-daa7ab00-184a-11eb-8ea7-d190ee936d80.gif)
