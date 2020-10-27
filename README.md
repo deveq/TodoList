@@ -9,6 +9,15 @@
 - 1. 완성 화면
 - 2. 느낀점
 
+### Room, LiveData, ViewModel
+Room, LiveData, ViewModel을 이용한 MVVM패턴을 활용하여
+MutableLiveData<MutableList<Todo>>타입으로 받고, Todo객체를 item_list의 View에 바인딩 해줌으로써
+화면에 목록으로써 구현됨.
+ 1. Room
+ 2. LiveData
+ 3. ViewModel
+ 
+
 ### 완성화면
 #### 할 일 추가
 ![add_todo](https://user-images.githubusercontent.com/66777885/97325733-a2d64d00-18b6-11eb-97e4-dff04270d94b.gif)
@@ -29,13 +38,7 @@
 ![sort](https://user-images.githubusercontent.com/66777885/97325967-dadd9000-18b6-11eb-832b-a2060169c45d.gif)
 
 
-### Room , LiveData, ViewModel
-Room, LiveData, ViewModel을 이용한 MVVM패턴을 활용하여
-MutableLiveData<MutableList<Todo>>타입으로 받고, Todo객체를 item_list의 View에 바인딩 해줌으로써
-화면에 목록으로써 구현됨.
-
-
-#### DetailActivity
-일정 상세 설정
+### 느낀점
+- MVVM 
 
 
