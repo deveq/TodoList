@@ -3,6 +3,11 @@
 
 ## 애플리케이션 설명
 간단히 할 일을 추가할 수 있는 Todo List 애플리케이션입니다.
+#### 참고자료
+1. 오준석의 안드로이드 생존코딩 코틀린편
+2. 깡쌤의 안드로이드 프로그래밍
+3. https://readystory.tistory.com/176 : [준비된 개발자]님의 [Android] AAC ViewModel 을 생성하는 6가지 방법 - ViewModelProvider
+
 
 ## 순서
 - 0. 완성 화면
