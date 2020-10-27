@@ -14,6 +14,38 @@ Room, LiveData, ViewModel을 이용한 MVVM패턴을 활용하여
 MutableLiveData<MutableList<Todo>>타입으로 받고, Todo객체를 item_list의 View에 바인딩 해줌으로써
 화면에 목록으로써 구현됨.
  1. Room
+ <pre><code>
+ @Dao
+interface TodoDao {
+    //전체 얻기. 기본값. 등록순서로 보이기
+    @Query("select * from Todo order by registerTime desc")
+    fun getAll() : MutableList<Todo>
+
+    //전체 얻기. 날짜순으로 얻기.
+    @Query("select * from todo order by date, time desc")
+    fun getAllTimeOrder() : MutableList<Todo>
+
+    //할일 키워드로 얻기
+    @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
+    fun getTodosByText(text: String) : MutableList<Todo>
+
+    //해시태그로 얻기  - 사용하지 않음
+    @Query("select * from todo where hashTag = (:hashTag)")
+    fun getTodosByHashTag(hashTag: String) : MutableList<Todo>
+
+    @Insert
+    fun insert(todo: Todo)
+
+    @Update
+    fun update(todo: Todo)
+
+    @Delete
+    fun delete(todo: Todo)
+
+    @Delete
+    fun deleteAll(vararg todo: Todo)
+}
+</code></pre>
  2. LiveData
  3. ViewModel
  
