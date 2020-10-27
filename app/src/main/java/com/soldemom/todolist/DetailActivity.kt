@@ -41,18 +41,28 @@ class DetailActivity : AppCompatActivity() {
 
         // 오늘 연,월,일을 get
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        date =  "$year.${month+1}.$day"
+        val year = todo?.year ?: calendar.get(Calendar.YEAR)
+        val month = todo?.month ?: calendar.get(Calendar.MONTH)
+        val day = todo?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
+        val hour = todo?.hour ?: 9
+        val minute = todo?.minute ?: 0
+        date =  "${year}.${month+1}.$day"
+        time = String.format("%02d:%02d",hour,minute)
+
+        detail_todo_date.text = date
+        detail_todo_time.text = time
 
 
         //날짜 지정
         val datePickerListener =
             DatePickerDialog.OnDateSetListener { view, _year, _month, dayOfMonth ->
-                date =  "$_year.${_month+1}.$dayOfMonth"
+                date =  "${_year}.${_month+1}.$dayOfMonth"
                 detail_todo_date.text = date
                 timeFlag = true
+                todo.year = _year
+                todo.month = _month
+                todo.day = dayOfMonth
+                todo.date = date
             }
 
         val datePickerDialog = DatePickerDialog(this, datePickerListener,year,month,day)
@@ -72,6 +82,9 @@ class DetailActivity : AppCompatActivity() {
                 time = "$strHour:$strMin"
                 detail_todo_time.text = time
                 timeFlag = true
+                todo.hour = hourOfDay
+                todo.minute = minute
+                todo.time = time
             }
 
 

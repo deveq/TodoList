@@ -18,21 +18,14 @@
     <item
         android:id="@+id/menu_delete_done"
         android:title="완료 지우기"/>
-    <item
-        android:id="@+id/menu_history"
-        android:title="지난 할 일 목록"/>
-    <item
-        android:title="검색">
 
-        <menu>
-            <item
-                android:id="@+id/menu_normal_search"
-                android:title="할 일 검색"/>
-            <item
-                android:id="@+id/menu_hash_search"
-                android:title="#검색"/>
-        </menu>
+    <item
+        android:id="@+id/menu_search"
+        android:title="검색"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
 
-    </item>
 
 </menu>

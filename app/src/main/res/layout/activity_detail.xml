@@ -95,6 +95,7 @@
         android:layout_marginTop="16dp"
         android:text="공부"
         android:hint="태그를 입력하세요"
+        android:inputType="text"
         />
 
     <Button

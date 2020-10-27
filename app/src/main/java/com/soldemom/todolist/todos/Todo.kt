@@ -18,4 +18,20 @@ data class Todo(var text: String?, var isDone: Boolean = false) : Serializable {
     var time: String? = null
     @ColumnInfo
     var date: String? = null
+    @ColumnInfo
+    var dateLong: Long? = null
+
+    @ColumnInfo
+    var year: Int? = null
+    @ColumnInfo
+    var month: Int? = null
+    @ColumnInfo
+    var day: Int? = null
+    @ColumnInfo
+    var hour: Int? = null
+    @ColumnInfo
+    var minute: Int? = null
+
+
+
 }
