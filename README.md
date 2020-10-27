@@ -33,107 +33,31 @@ DetailActivity에서 Todo객체를 받아와 처리하는 방식으로 진행했
     
 #### 완료하기
 ![done](https://user-images.githubusercontent.com/66777885/97325869-c4373900-18b6-11eb-9b2f-de512f59cc03.gif)
-<pre><code>MyAdapter.kt
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // position에 해당하는 Todo객체를 얻음
-        val todo = itemList[position]
-
-        holder.todoText.text = todo.text
-        
-        // todo객체의 isDone을 CheckBox의 isChecked에 set해줌
-        holder.todoIsDone.isChecked = todo.isDone
-        
-        // todo가 완료(done)된 상태라면 todo_text의 글자색 변경 후 취소선을 추가
-        if (todo.isDone) {
-            holder.todoText.apply {
-                setTextColor(Color.GRAY)
-                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                setTypeface(null, Typeface.ITALIC)
-            }
-        } else {
-            // 완료상태가 아니라면 글자색 복구, 취소선 없앰
-            holder.todoText.apply {
-                setTextColor(Color.BLACK)
-                paintFlags = 0
-                setTypeface(null, Typeface.NORMAL)
-            }
-        }
-        
-        // CheckBox인 todoIsDone이 클릭되었을 때
-        holder.todoIsDone.apply {
-            setOnClickListener {
-                todo.isDone = this.isChecked
-                viewModel.update(todo)
-                //변경이 완료되었으므로 다시 todoList를 받아온 후 
-                // liveData.value에 넣어주는 setList메서드 실행
-                setList()
-            }
-        }
-        ...
-        ..
-        .
-        </code></pre>
+CheckBox 체크 시 isChecked의 값을 todo.isDone 넣어주고, todo.isDone의 값에 따라 취소선(-)이 표시되게 하였습니다.
 
 #### 삭제하기
 ![delete](https://user-images.githubusercontent.com/66777885/97325903-cc8f7400-18b6-11eb-9936-d98a1f8cdded.gif)
-
-<pre><code>'X'를 눌러 할 일(아이템) 한 개 삭제하기
-MyAdapter.kt
-override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-    ...
-    ..
-    .
-    //아이템 내의 x버튼을 누를 경우 삭제여부 확인.
-    holder.todoDelete.setOnClickListener {
-      val alertDialog = AlertDialog.Builder(context)
-        .setMessage("정말 삭제하시겠습니까?")
-        .setPositiveButton("삭제") {str, dialogInterface ->
-          val todo = itemList[position]
-          viewModel.delete(todo)
-          setList()
-        }
-      .setNegativeButton("취소",null)
-    
-    alertDialog.show()
-    }
-}
-</code></pre>
-
-<pre><code>상단 메뉴의 완료 일괄삭제
-MainActivity.kt
-override fun onOptionsItemSelected(item: MenuItem): Boolean {
-  when(item.itemId) {
-    ...
-    ..
-    .
-    R.id.menu_delete_done -> {
-      val alertDialog = AlertDialog.Builder(this)
-      alertDialog.setMessage("완료된 할 일 목록을 전체 지우시겠습니까?")
-        .setNegativeButton("취소", null)
-        .setPositiveButton("확인") { _, _ ->
-          for (todo in todayAdapter.itemList) {
-            if (todo.isDone) {
-              viewModel.delete(todo)
-            }
-          }
-          setList()
-        }
-        .show()
-    }
- </code></pre>
+'X'버튼을 통해 삭제하거나 menu의 완료 삭제를 통해 삭제를 합니다.
+todoDao의 delete 메서드를 통해 삭제하는 방식으로 진행하였습니다.
 
 #### 검색하기
 ![search](https://user-images.githubusercontent.com/66777885/97325931-d44f1880-18b6-11eb-8fd8-8d9f2b695433.gif)
 <pre><code>
+TodoDao.kt
+    //Query문을 이용해 키워드로 todoList 얻기.
+    @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
+    fun getTodosByText(text: String) : MutableList<Todo>
+    </code></pre>
+Room의 Query어노테이션의 속성에 query문을 넣어주었고, getTodosByText의 매개변수로 들어온 text를 이용하여 검색하고
+리스트를 받는 방식으로 진행하였습니다.
+
+
+<pre><code>MainActivity.kt
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
-
-        val menuItem = menu?.findItem(R.id.menu_search)
-        val searchView = menuItem?.actionView  as SearchView
-
-        //검색 기능
+         ...
+         ..
+         .
+      //검색 기능
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //검색어 입력버튼을 누른 후 내용이 있다면
@@ -159,44 +83,13 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
     }
 </code></pre>
 
-<pre><code>
-TodoViewModel.kt
-    val mutableLiveData = MutableLiveData<MutableList<Todo>>(todos)
-
-    //할일 키워드로 얻기
-    fun getTodosByText(text: String) : MutableList<Todo> {
-        return todoDao.getTodosByText(text)
-    }
-</code></pre>
-<pre><code>
-TodoDao.kt
-    //Query문을 이용해 키워드로 todoList 얻기.
-    @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
-    fun getTodosByText(text: String) : MutableList<Todo>
-    </code></pre>
-
 
 #### 정렬하기
 ![sort](https://user-images.githubusercontent.com/66777885/97325967-dadd9000-18b6-11eb-832b-a2060169c45d.gif)
-<pre><code>검색하기
-MainActivity.kt
-//메뉴 이벤트 처리
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            //등록일 기준 정렬
-            R.id.menu_sort_register -> {
-                viewModel.isTimeOrder = false
+메뉴의 등록일 순 얻기는 Todo객체의 PrimaryKey인 registerTime: Long 객체로 Todo객체가 생성될 때 System.currentTimeMills()를 얻습니다.
+그것을 기준으로 등록일 순 정렬을 얻었습니다.
 
-            }
-            //날짜 기준 정렬
-            R.id.menu_sort_date -> {
-                viewModel.isTimeOrder = true
-            }
-            ...
-            ..
-            .
-</code></pre>
-
+날짜순 얻기는 Todo객체의 date와 time을 통해 검색됩니다.
 <pre><code>TodoDao.kt
     @Query("select * from Todo order by registerTime desc")
     fun getAll() : MutableList<Todo>
@@ -279,46 +172,7 @@ class ViewModelProviderFactory(val context: Context) : ViewModelProvider.Factory
         }
     }
 }</code></pre>
-https://readystory.tistory.com/176 : [준비된 개발자]님의 [Android] AAC ViewModel 을 생성하는 6가지 방법 - ViewModelProvider 참조했습니다.
- 
- <pre><code>
- class TodoViewModel(context: Context) : ViewModel() {
-    //RoomDatabase 객체를 받아옴.
-    private val todoDatabase = Room.databaseBuilder(context, AppDatabase::class.java, "todo")
-        .allowMainThreadQueries()
-        .fallbackToDestructiveMigration()
-        .build()
 
-    private val todoDao = todoDatabase.todoDao()
-    private val todos = todoDao.getAll()
-    val mutableLiveData = MutableLiveData<MutableList<Todo>>(todos)
-
-    // 정렬 방식 선택 후(등록일 or 날짜) 그 정렬 방식으로 계속 정렬되게끔 하는 flag
-    // false : 등록일 기준 정렬, true : 날짜 기준 정렬
-    var isTimeOrder: Boolean = false
-
-    fun getList(isTimeOrder: Boolean): MutableList<Todo> {
-        return if (isTimeOrder) getAllTimeOrder() else getAll()
-    }
-
-    fun getAll() : MutableList<Todo> {
-        return todoDao.getAll()
-    }
-
-    //전체 얻기. 날짜순으로 얻기.
-    fun getAllTimeOrder() : MutableList<Todo> {
-        return todoDao.getAllTimeOrder()
-    }
-
-    //할일 키워드로 얻기
-    fun getTodosByText(text: String) : MutableList<Todo> {
-        return todoDao.getTodosByText(text)
-    }
-    ....
-    ...
-    ..
-    .
-</code></pre>
 
 3. LiveData
 TodoDao객체에서 todoList 검색 결과를 받은 후 MutableLiveData<List<Todo>>객체 생성 시 인자로 해당 todoList를 넣어주어 생성
