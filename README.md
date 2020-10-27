@@ -14,6 +14,27 @@ Room, LiveData, ViewModel을 이용한 MVVM패턴을 활용하여
 MutableLiveData<MutableList<Todo>>타입으로 받고, Todo객체를 item_list의 View에 바인딩 해줌으로써
 화면에 목록으로써 구현됨.
  *Room
+  - Entity 생성
+  <pre><code>@Entity
+data class Todo(var text: String?, var isDone: Boolean = false) : Serializable {
+    // 등록하는 순간 System의 시간을 받으므로 등록일 순 정렬에 사용할 기준이 됨.
+    @PrimaryKey
+    var registerTime : Long = System.currentTimeMillis()
+
+    @ColumnInfo
+    var hashTag: String? = null
+
+    // 날짜 기준 검색의 기준이 됨.
+    @ColumnInfo
+    var time: String? = null
+    @ColumnInfo
+    var date: String? = null
+    @ColumnInfo
+    var dateLong: Long? = null
+    ...
+    ..
+    .
+</code></pre>
   - Dao 생성
  <pre><code>
  @Dao
@@ -29,23 +50,10 @@ interface TodoDao {
     //할일 키워드로 얻기
     @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
     fun getTodosByText(text: String) : MutableList<Todo>
-
-    //해시태그로 얻기  - 사용하지 않음
-    @Query("select * from todo where hashTag = (:hashTag)")
-    fun getTodosByHashTag(hashTag: String) : MutableList<Todo>
-
-    @Insert
-    fun insert(todo: Todo)
-
-    @Update
-    fun update(todo: Todo)
-
-    @Delete
-    fun delete(todo: Todo)
-
-    @Delete
-    fun deleteAll(vararg todo: Todo)
-}
+    ....
+    ...
+    ..
+    .
 </code></pre>
 
  - Database 생성
@@ -90,30 +98,32 @@ abstract class AppDatabase : RoomDatabase() {
     fun getTodosByText(text: String) : MutableList<Todo> {
         return todoDao.getTodosByText(text)
     }
-
-    //해시태그로 얻기 - 사용하지 않음
-    fun getTodosByHashTag(hashTag: String) : MutableList<Todo> {
-        return todoDao.getTodosByHashTag(hashTag)
-    }
-
-    fun insert(todo: Todo) {
-        todoDao.insert(todo)
-    }
-
-    fun update(todo: Todo) {
-        todoDao.update(todo)
-    }
-
-    fun delete(todo: Todo) {
-        todoDao.delete(todo)
-    }
-
-    fun deleteAll(todo: Array<Todo>){
-        todoDao.deleteAll(*todo)
-    }
-}
+    ....
+    ...
+    ..
+    .
 </code></pre>
 
+3. LiveData
+TodoDao객체에서 todoList 검색 결과를 받은 후 MutableLiveData<List<Todo>>객체 생성 시 인자로 해당 todoList를 넣어주어 생성
+  <pre><code>val mutableLiveData = MutableLiveData<MutableList<Todo>>(todos)
+</code></pre>
+ <pre><code>    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        //뷰모델 받아오기
+        viewModel = ViewModelProvider(this, ViewModelProviderFactory(this.application))
+            .get(TodoViewModel::class.java)
+
+        //recycler view에 보여질 아이템 Room에서 받아오기
+        todoList = viewModel.mutableLiveData
+        todoList.observe(this, Observer {
+            todayAdapter.itemList = it
+            todayAdapter.notifyDataSetChanged()
+        })
+
+</code></pre>
  
  
 
