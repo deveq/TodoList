@@ -38,7 +38,7 @@ class TodoViewModel(context: Context) : ViewModel() {
         return todoDao.getTodosByText(text)
     }
 
-    //해시태그로 얻기
+    //해시태그로 얻기 - 사용하지 않음
     fun getTodosByHashTag(hashTag: String) : MutableList<Todo> {
         return todoDao.getTodosByHashTag(hashTag)
     }

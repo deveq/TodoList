@@ -18,7 +18,7 @@ interface TodoDao {
     @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
     fun getTodosByText(text: String) : MutableList<Todo>
 
-    //해시태그로 얻기
+    //해시태그로 얻기  - 사용하지 않음
     @Query("select * from todo where hashTag = (:hashTag)")
     fun getTodosByHashTag(hashTag: String) : MutableList<Todo>
 

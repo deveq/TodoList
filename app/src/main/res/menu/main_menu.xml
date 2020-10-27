@@ -4,24 +4,25 @@
 
     <item
         android:id="@+id/menu_sort"
-        android:title="정렬기준">
+        android:title="@string/menu_sort">
         <menu>
             <item
                 android:id="@+id/menu_sort_register"
-                android:title="등록일 기준"/>
+                android:title="@string/menu_sort_register"/>
             <item
                 android:id="@+id/menu_sort_date"
-                android:title="날짜 기준"/>
+                android:title="@string/menu_sort_date"/>
         </menu>
 
     </item>
     <item
         android:id="@+id/menu_delete_done"
-        android:title="완료 지우기"/>
+        android:title="@string/menu_delete_done"
+        />
 
     <item
         android:id="@+id/menu_search"
-        android:title="검색"
+        android:title="@string/menu_search"
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_search_24"
         app:actionViewClass="androidx.appcompat.widget.SearchView"

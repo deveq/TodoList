@@ -24,19 +24,12 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        detail_todo_input //할일
-        detail_todo_tag //해시태그
-        detail_cancel_btn //취소
-        detail_confirm_btn //확인
-
         bundle = intent.getBundleExtra("data")
-
-        val position = intent.getIntExtra("position",0)
 
         bundle?.apply {
             todo = getSerializable("todo") as Todo
             detail_todo_input.setText(todo.text)
-            detail_todo_tag.setText(todo.hashTag)
+//            detail_todo_tag.setText(todo.hashTag)
         }
 
         // 오늘 연,월,일을 get
@@ -100,22 +93,6 @@ class DetailActivity : AppCompatActivity() {
         // 취소 버튼 눌렀을 때
         detail_cancel_btn.setOnClickListener(detailBtnListener)
 
-
-
-
-        // HashTag를 수정한 후 focus를 잃을 때
-        // 동작안됨..
-/*        detail_todo_tag.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                val text = (v as EditText).text.toString()
-                if (text != "") {
-                    todo.hashTag = text
-                }
-            }
-        }*/
-        
-
-
     }
 
     val detailBtnListener = View.OnClickListener { view->
@@ -131,12 +108,13 @@ class DetailActivity : AppCompatActivity() {
                 // 할일
                 todo.text = detail_todo_input.text.toString()
 
+                /*
                 // Tag
                 val text = detail_todo_tag.text.toString()
                 if (text != "") {
                     todo.hashTag = text
                 }
-
+                */
                 bundle.putSerializable("todo",todo)
                 intent.putExtra("data",bundle)
                 setResult(Activity.RESULT_OK,intent)

@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">TodoList</string>
+    <string name="detail_title">상세 설정</string>
+    <string name="detail_todo_text">할 일</string>
+    <string name="detail_todo_time_text">시간 설정</string>
+    <string name="detail_cancel_btn_text">취소</string>
+    <string name="detail_confirm_btn_text">확인</string>
+    <string name="deatil_todo_input_hint">할 일을 입력해주세요.</string>
+    <string name="main_todo_add_btn">추가</string>
+    <string name="main_todo_input_hint">오늘 할 일 간단히 추가</string>
+    <string name="menu_sort">정렬기준</string>
+    <string name="menu_sort_register">등록일 기준</string>
+    <string name="menu_sort_date">날짜 기준</string>
+    <string name="menu_search">검색</string>
+    <string name="menu_delete_done">완료 지우기</string>
+
+
 </resources>

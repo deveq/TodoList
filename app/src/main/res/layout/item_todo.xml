@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -38,14 +37,12 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.35"
-            tools:text="공부" />
+            app:layout_constraintVertical_bias="0.35"/>
 
         <TextView
             android:id="@+id/todo_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2020.10.26 09:00"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="visible"
@@ -54,18 +51,18 @@
 
             />
 
-        <TextView
-            android:id="@+id/todo_hash_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle"
-            android:text="#중요"
-            android:visibility="gone"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/todo_text"
-            android:layout_marginRight="16dp"
+<!--        <TextView-->
+<!--            android:id="@+id/todo_hash_tag"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/rectangle"-->
+<!--            android:text="#중요"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintBaseline_toBaselineOf="@id/todo_text"-->
+<!--            android:layout_marginRight="16dp"-->
 
-            />
+<!--            />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
