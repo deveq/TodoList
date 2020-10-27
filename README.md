@@ -278,7 +278,6 @@ abstract class AppDatabase : RoomDatabase() {
 // 생성자가 있는 ViewModel을 생성하기 위해서는 내가 만들고자 하는 viewModel을 AndroidViewModel(application)을 상속받아 생성하
 // ViewModel을 상속받은 경우는 ViewModelProvider.Factory 인터페이스를 구현한 클래스를 이용해서 생성해야함.
 
-// https://readystory.tistory.com/176 : [준비된 개발자]님의 [Android] AAC ViewModel 을 생성하는 6가지 방법 - ViewModelProvider 참조했습니다.
 
 class ViewModelProviderFactory(val context: Context) : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -289,6 +288,7 @@ class ViewModelProviderFactory(val context: Context) : ViewModelProvider.Factory
         }
     }
 }</code></pre>
+https://readystory.tistory.com/176 : [준비된 개발자]님의 [Android] AAC ViewModel 을 생성하는 6가지 방법 - ViewModelProvider 참조했습니다.
  
  <pre><code>
  class TodoViewModel(context: Context) : ViewModel() {
