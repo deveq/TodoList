@@ -8,6 +8,10 @@
 2. 깡쌤의 안드로이드 프로그래밍
 3. https://readystory.tistory.com/176 : [준비된 개발자]님의 [Android] AAC ViewModel 을 생성하는 6가지 방법 - ViewModelProvider
 
+#### TodoList 애플리케이션을 만든 이유
+간단한 참고자료1의 책을 이용해 공부하던 중 예제로 있던 TodoList를 조금 더 보완해서 만들 수 있지 않을까 생각하였습니다.
+Room을 이용해 로컬 DB를 이용하고, @Query를 이용해 SQL의 Select문을 이용한다면 간단한 검색과 정렬 기능을 추가할 수 있을 것이라 생각였고
+상단 Menu 역시 프로젝트를 통해 익힐 수 있을 것이라 생각하여 만들게 되었습니다.
 
 ## 순서
 - 0. 완성 화면
@@ -17,33 +21,15 @@
 ### 완성화면
 #### 할 일 추가
 ![add_todo](https://user-images.githubusercontent.com/66777885/97325733-a2d64d00-18b6-11eb-97e4-dff04270d94b.gif)
-<pre><code>MyAdapter.kt
-    // 메뉴 추가
-    todo_add.setOnClickListener {
-        if (todo_input.text.toString() != "") {
-           val todo = Todo(todo_input.text.toString())
-            viewModel.insert(todo)
-            setList()
-            todo_input.setText("")
-        }
-    }</code></pre>
-하단의 EditText에 내용을 입력 후 '추가' Button을 누르면 viewModel객체 내의 MutableLiveData의 value의 값이 변경되도록 설정함.
+
+하단의 EditText에 내용을 입력 후 '추가' Button을 누르면 viewModel객체 내의 MutableLiveData의 value의 값이 변경되도록 설정했습니다.
 
 #### 상세보기 (상세설정)
 ![detail](https://user-images.githubusercontent.com/66777885/97325823-b8e40d80-18b6-11eb-8102-ebd4c3b6c95d.gif)
-<pre><code>MainActivity.kt
-fun goToDetail(todo: Todo, position: Int) {
-        val intent = Intent(this, DetailActivity::class.java)
-        val bundle = Bundle()
-        bundle.putSerializable("todo", todo)
-        intent.putExtra("data", bundle)
-        intent.putExtra("position", position)
-        startActivityForResult(intent, RC_GO_TO_DETAIL)
-    }</code></pre>
-    
-RecyclerView의 item이 클릭되면 Adapter로 전달된 goToDeatil메서드가 실행됨.
-bundle에 Serializable을 구현한 Todo객체를 넣어주고, 
-DetailActivity에서 Todo객체를 받아와 처리하는 방식으로 진행
+   
+RecyclerView의 item이 클릭되면 Adapter로 전달된 goToDeatil메서드가 실행되고
+bundle에 Serializable을 구현한 Todo객체를 넣어줍니다.
+DetailActivity에서 Todo객체를 받아와 처리하는 방식으로 진행했습니다.
     
 #### 완료하기
 ![done](https://user-images.githubusercontent.com/66777885/97325869-c4373900-18b6-11eb-9b2f-de512f59cc03.gif)
@@ -184,7 +170,7 @@ TodoViewModel.kt
 </code></pre>
 <pre><code>
 TodoDao.kt
-    //할일 키워드로 얻기
+    //Query문을 이용해 키워드로 todoList 얻기.
     @Query("select * from todo where text like '%' ||:text || '%' order by date,time desc")
     fun getTodosByText(text: String) : MutableList<Todo>
     </code></pre>
@@ -359,6 +345,6 @@ TodoDao객체에서 todoList 검색 결과를 받은 후 MutableLiveData<List<To
 
 
 ### 느낀점
- - ViewModel과 LiveData를 이용하여 MVVM패턴으로 만들어보았는데 
+
 
 
