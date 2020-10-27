@@ -13,7 +13,8 @@
 Room, LiveData, ViewModel을 이용한 MVVM패턴을 활용하여
 MutableLiveData<MutableList<Todo>>타입으로 받고, Todo객체를 item_list의 View에 바인딩 해줌으로써
 화면에 목록으로써 구현됨.
- 1. Room
+ *Room
+  - Dao 생성
  <pre><code>
  @Dao
 interface TodoDao {
@@ -46,8 +47,74 @@ interface TodoDao {
     fun deleteAll(vararg todo: Todo)
 }
 </code></pre>
- 2. LiveData
- 3. ViewModel
+
+ - Database 생성
+ <pre><code>
+ @Database(entities = [Todo::class], version = 2)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun todoDao(): TodoDao
+}
+</code></pre>
+  
+ 2. ViewModel
+ <pre><code>
+ class TodoViewModel(context: Context) : ViewModel() {
+    //RoomDatabase 객체를 받아옴.
+    private val todoDatabase = Room.databaseBuilder(context, AppDatabase::class.java, "todo")
+        .allowMainThreadQueries()
+        .fallbackToDestructiveMigration()
+        .build()
+
+    private val todoDao = todoDatabase.todoDao()
+    private val todos = todoDao.getAll()
+    val mutableLiveData = MutableLiveData<MutableList<Todo>>(todos)
+
+    // 정렬 방식 선택 후(등록일 or 날짜) 그 정렬 방식으로 계속 정렬되게끔 하는 flag
+    // false : 등록일 기준 정렬, true : 날짜 기준 정렬
+    var isTimeOrder: Boolean = false
+
+    fun getList(isTimeOrder: Boolean): MutableList<Todo> {
+        return if (isTimeOrder) getAllTimeOrder() else getAll()
+    }
+
+    fun getAll() : MutableList<Todo> {
+        return todoDao.getAll()
+    }
+
+    //전체 얻기. 날짜순으로 얻기.
+    fun getAllTimeOrder() : MutableList<Todo> {
+        return todoDao.getAllTimeOrder()
+    }
+
+    //할일 키워드로 얻기
+    fun getTodosByText(text: String) : MutableList<Todo> {
+        return todoDao.getTodosByText(text)
+    }
+
+    //해시태그로 얻기 - 사용하지 않음
+    fun getTodosByHashTag(hashTag: String) : MutableList<Todo> {
+        return todoDao.getTodosByHashTag(hashTag)
+    }
+
+    fun insert(todo: Todo) {
+        todoDao.insert(todo)
+    }
+
+    fun update(todo: Todo) {
+        todoDao.update(todo)
+    }
+
+    fun delete(todo: Todo) {
+        todoDao.delete(todo)
+    }
+
+    fun deleteAll(todo: Array<Todo>){
+        todoDao.deleteAll(*todo)
+    }
+}
+</code></pre>
+
+ 
  
 
 ### 완성화면
