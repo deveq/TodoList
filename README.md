@@ -33,15 +33,18 @@ DetailActivity에서 Todo객체를 받아와 처리하는 방식으로 진행했
     
 #### 완료하기
 ![done](https://user-images.githubusercontent.com/66777885/97325869-c4373900-18b6-11eb-9b2f-de512f59cc03.gif)
+
 CheckBox 체크 시 isChecked의 값을 todo.isDone 넣어주고, todo.isDone의 값에 따라 취소선(-)이 표시되게 하였습니다.
 
 #### 삭제하기
 ![delete](https://user-images.githubusercontent.com/66777885/97325903-cc8f7400-18b6-11eb-9936-d98a1f8cdded.gif)
+
 'X'버튼을 통해 삭제하거나 menu의 완료 삭제를 통해 삭제를 합니다.
 todoDao의 delete 메서드를 통해 삭제하는 방식으로 진행하였습니다.
 
 #### 검색하기
 ![search](https://user-images.githubusercontent.com/66777885/97325931-d44f1880-18b6-11eb-8fd8-8d9f2b695433.gif)
+
 <pre><code>
 TodoDao.kt
     //Query문을 이용해 키워드로 todoList 얻기.
@@ -86,6 +89,7 @@ Room의 Query어노테이션의 속성에 query문을 넣어주었고, getTodosB
 
 #### 정렬하기
 ![sort](https://user-images.githubusercontent.com/66777885/97325967-dadd9000-18b6-11eb-832b-a2060169c45d.gif)
+
 메뉴의 등록일 순 얻기는 Todo객체의 PrimaryKey인 registerTime: Long 객체로 Todo객체가 생성될 때 System.currentTimeMills()를 얻습니다.
 그것을 기준으로 등록일 순 정렬을 얻었습니다.
 
