@@ -20,32 +20,32 @@ Room을 이용해 로컬 DB를 이용하고, @Query를 이용해 SQL의 Select�
 - 2. 느낀점
 
 ### 완성화면
-#### 할 일 추가
-![add_todo](https://user-images.githubusercontent.com/66777885/97325733-a2d64d00-18b6-11eb-97e4-dff04270d94b.gif)
+#### 할 일 추가<br>
+![add_todo](https://user-images.githubusercontent.com/66777885/101209314-e2166b80-36b6-11eb-8a06-7a978430780c.gif)
 
 하단의 EditText에 내용을 입력 후 '추가' Button을 누르면 viewModel객체 내의 MutableLiveData의 value의 값이 변경되도록 설정했습니다.
 
-#### 상세보기 (상세설정)
-![detail](https://user-images.githubusercontent.com/66777885/97325823-b8e40d80-18b6-11eb-8102-ebd4c3b6c95d.gif)
+#### 상세보기 (상세설정)<br>
+![detail](https://user-images.githubusercontent.com/66777885/101209361-f35f7800-36b6-11eb-84a2-f47cdc75f189.gif)
 
 RecyclerView의 item이 클릭되면 Adapter로 전달된 goToDeatil메서드가 실행되고</br>
 bundle에 Serializable을 구현한 Todo객체를 넣어줍니다.</br>
 DetailActivity에서 Todo객체를 받아와 처리하는 방식으로 진행했습니다.</br>
 
     
-#### 완료하기
-![done](https://user-images.githubusercontent.com/66777885/97325869-c4373900-18b6-11eb-9b2f-de512f59cc03.gif)
+#### 완료하기<br>
+![done](https://user-images.githubusercontent.com/66777885/101209386-fc504980-36b6-11eb-8116-35c7ec8a590e.gif)
 
 CheckBox 체크 시 isChecked의 값을 todo.isDone 넣어주고, todo.isDone의 값에 따라 취소선(-)이 표시되게 하였습니다.
 
-#### 삭제하기
-![delete](https://user-images.githubusercontent.com/66777885/97325903-cc8f7400-18b6-11eb-9936-d98a1f8cdded.gif)
+#### 삭제하기<br>
+![delete](https://user-images.githubusercontent.com/66777885/101209400-01ad9400-36b7-11eb-8da9-e15855ac9207.gif)
 
 'X'버튼을 통해 삭제하거나 menu의 완료 삭제를 통해 삭제를 합니다.
 todoDao의 delete 메서드를 통해 삭제하는 방식으로 진행하였습니다.
 
-#### 검색하기
-![search](https://user-images.githubusercontent.com/66777885/97325931-d44f1880-18b6-11eb-8fd8-8d9f2b695433.gif)
+#### 검색하기<br>
+![search](https://user-images.githubusercontent.com/66777885/101209423-0bcf9280-36b7-11eb-9b7a-4038187a664d.gif)
 
 <pre><code>
 TodoDao.kt
@@ -89,8 +89,8 @@ Room의 Query어노테이션의 속성에 query문을 넣어주었고, getTodosB
 </code></pre>
 
 
-#### 정렬하기
-![sort](https://user-images.githubusercontent.com/66777885/97325967-dadd9000-18b6-11eb-832b-a2060169c45d.gif)
+#### 정렬하기<br>
+![sort](https://user-images.githubusercontent.com/66777885/101209430-112cdd00-36b7-11eb-9540-ca62c1911c1d.gif)
 
 메뉴의 등록일 순 얻기는 Todo객체의 PrimaryKey인 registerTime: Long 객체로 Todo객체가 생성될 때</br>
 System.currentTimeMills()를 얻습니다.</br>
